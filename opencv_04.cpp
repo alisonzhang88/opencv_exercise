@@ -29,7 +29,29 @@ int main(int argc, char const *argv[])
 		}
 	}
 
-	imshow("output", src);
+	Mat result = Mat::zeros(src.size(), src.type());
+
+	int blue, green, red;
+	int gray;
+
+	for(int row = 0; row < height; row++)
+	{
+		 uchar* curr_row = src.ptr<uchar>(row);
+		 uchar* result_row = result.ptr<uchar>(row);
+		 for(int col=0; col<width; col++)
+		 {
+		 	blue = *curr_row++;
+		 	green = *curr_row++;
+		 	red = *curr_row++;
+
+		 	*result_row++ = blue;
+		 	*result_row++ = green;
+		 	*result_row++ = red;
+		 }
+	}
+
+
+	imshow("output", result);
 
 
 	waitKey(0);
