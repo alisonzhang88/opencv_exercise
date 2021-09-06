@@ -17,17 +17,17 @@ int main(int argc, char const *argv[])
 	int height = src.rows;
 	int width = src.cols;
 	int ch = src.channels();
-	for (int i = 0; i < height; ++i)
-	{
-		for (int j = 0; j < width; ++j)
-		{
-			Vec3d bgr = src.at<Vec3d>(i, j);
-			bgr[0] = 255 - bgr[0];
-			bgr[1] = 255 - bgr[1];
-			bgr[2] = 255 - bgr[2];
-			src.at<Vec3d>(i, j) = bgr;
-		}
-	}
+	// for (int i = 0; i < height; ++i)
+	// {
+	// 	for (int j = 0; j < width; ++j)
+	// 	{
+	// 		Vec3d bgr = src.at<Vec3d>(i, j);
+	// 		bgr[0] = 255 - bgr[0];
+	// 		bgr[1] = 255 - bgr[1];
+	// 		bgr[2] = 255 - bgr[2];
+	// 		src.at<Vec3d>(i, j) = bgr;
+	// 	}
+	// }
 
 	Mat result = Mat::zeros(src.size(), src.type());
 
@@ -36,17 +36,11 @@ int main(int argc, char const *argv[])
 
 	for(int row = 0; row < height; row++)
 	{
-		 uchar* curr_row = src.ptr<uchar>(row);
-		 uchar* result_row = result.ptr<uchar>(row);
 		 for(int col=0; col<width; col++)
 		 {
-		 	blue = *curr_row++;
-		 	green = *curr_row++;
-		 	red = *curr_row++;
-
-		 	*result_row++ = blue;
-		 	*result_row++ = green;
-		 	*result_row++ = red;
+		 	result.at<Vec3d>(row, col)[0] = saturate_cast<uchar>(src.at<Vec3d>(row, col)[0] * 2);
+		 	result.at<Vec3d>(row, col)[1] = saturate_cast<uchar>(src.at<Vec3d>(row, col)[1] * 2);
+		 	result.at<Vec3d>(row, col)[2] = saturate_cast<uchar>(src.at<Vec3d>(row, col)[2] * 2);
 		 }
 	}
 
